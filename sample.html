@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New request</title>
+    <title>New Request</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,7 +20,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
-        h2 {
+        h2, h4 {
             text-align: left;
         }
 
@@ -29,7 +29,6 @@
         }
 
         label {
-            display: block;
             font-weight: bold;
         }
 
@@ -70,35 +69,35 @@
 </head>
 <body>
     <div class="container">
-        <h2>New request</h2>
+        <h2>New Request</h2>
         <h4>Describe your issue and include relevant screenshots.</h4>
         <form action="#" method="POST">
             <div class="form-group">
-                <label for="name">Requested for: *</label>
-                <input type="email" id="email_id" required="">
+                <label for="email_id">Requested for: *</label>
+                <input type="email" id="email_id" required>
             </div>
             <div class="form-group">
-                <label for="location">Location: *</label>
-                <input type="loc" id="loc" required="">
+                <label for="loc">Location: *</label>
+                <input type="text" id="loc" required>
             </div>
             <div class="form-group">
-                <label for="service">IT Service: *</label>
-                <input type="serv" id="serv" name="serv" required="">
+                <label for="serv">IT Service: *</label>
+                <input type="text" id="serv" name="serv" required>
             </div>
             <div class="form-group">
-                <label for="cat">Purpose of Request: *</label>
-                <select id="category" name="category" required="">
-                    <option value="test">Ask information, something to be provided</option>
-                    <option value="test">Report a service malfunction, interruption or degradation.</option>
+                <label for="category">Purpose of Request: *</label>
+                <select id="category" name="category" required>
+                    <option value="info">Ask for information or something to be provided</option>
+                    <option value="malfunction">Report a service malfunction, interruption, or degradation</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="sdescription">Short Description: *</label>
-                <input type="sdesc" id="sdesc" name="sdesc" required="">
+                <label for="sdesc">Short Description: *</label>
+                <input type="text" id="sdesc" name="sdesc" required>
             </div>
             <div class="form-group">
-                <label for="descr">Description: *</label>
-                <textarea id="description" name="description" required=""></textarea>
+                <label for="description">Description: *</label>
+                <textarea id="description" name="description" required></textarea>
             </div>
             <button type="submit">Submit</button>
         </form>
