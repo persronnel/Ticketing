@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Request</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: left;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 150px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>New Request</h2>
+        <h4>Describe your issue and include relevant screenshots.</h4>
+        <form action="#" method="POST" id="sampleForm">
+            <div class="form-group">
+                <label for="AssignmentGroup">Assignment Group: <span>*</span></label>
+                <input type="text" id="AssignmentGroup" name="AssignmentGroup" required>
+            </div>
+            <div class="form-group">
+                <label for="Description">Description: <span>*</span></label>
+                <textarea id="Description" name="Description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="Environment">Environment: <span>*</span></label>
+                <input type="text" id="Environment" name="Environment" required>
+            </div>
+            <div class="form-group">
+                <label for="Impact">Impact: <span>*</span></label>
+                <input type="text" id="Impact" name="Impact" required>
+            </div>
+            <div class="form-group">
+                <label for="Urgency">Urgency: <span>*</span></label>
+                <input type="text" id="Urgency" name="Urgency" required>
+            </div>
+            <div class="form-group">
+                <label for="ITServiceName">IT Service Name: <span>*</span></label>
+                <input type="text" id="ITServiceName" name="ITServiceName" required>
+            </div>
+            <div class="form-group">
+                <label for="ShortDescription">Short Description: <span>*</span></label>
+                <input type="text" id="ShortDescription" name="ShortDescription" required>
+            </div>
+            <div class="form-group">
+                <label for="EndUserFullName">End User Full Name: <span>*</span></label>
+                <input type="text" id="EndUserFullName" name="EndUserFullName" required>
+            </div>
+            <div class="form-group">
+                <label for="AssignedToFullName">Assigned To Full Name: <span>*</span></label>
+                <input type="text" id="AssignedToFullName" name="AssignedToFullName" required>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('sampleForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            // Collect form data
+            const formData = {
+                'AssignmentGroup': document.getElementById('AssignmentGroup').value,
+                'Description': document.getElementById('Description').value,
+                'Environment': document.getElementById('Environment').value,
+                'Impact': document.getElementById('Impact').value,
+                'Urgency': document.getElementById('Urgency').value,
+                'ITServiceName': document.getElementById('ITServiceName').value,
+                'ShortDescription': document.getElementById('ShortDescription').value,
+                'EndUserFullName': document.getElementById('EndUserFullName').value,
+                'AssignedToFullName': document.getElementById('AssignedToFullName').value
+            };
+
+            // Replace 'your-api-endpoint-here' with your actual API endpoint
+            fetch('your-api-endpoint-here', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Handle successful response (e.g., show a success message)
+                    console.log('Request submitted successfully.');
+                } else {
+                    // Handle errors (e.g., show an error message)
+                    console.error('Request submission failed.');
+                }
+            })
+            .catch(error => {
+                // Handle network or other errors
+                console.error('An error occurred:', error);
+            });
+        });
+    </script>
+</body>
+</html>
