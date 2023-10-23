@@ -112,15 +112,18 @@
                 <label for="AssignedToFullName">Assigned To Full Name: <span>*</span></label>
                 <input type="text" id="AssignedToFullName" name="AssignedToFullName" required>
             </div>
-            <button type="submit">Submit</button>
+            <button type="button" onclick="submitForm()">Submit</button>
+
         </form>
     </div>
     <script>
         function submitForm() {
+            console.log('Submit button clicked');
+            event.preventDefault();
             var formData = new FormData(document.getElementById('sampleForm'));
-            var apiUrl = 'test';
+            var apiUrl = 'https://area109.com/requests';
             var httpMethod = 'POST';
-            var accessToken = 'test';
+            var accessToken = 'test'; //i am changing this
             var bearerToken = 'Bearer ' + accessToken;
             var xhr = new XMLHttpRequest();
             xhr.open(httpMethod, apiUrl, true);
