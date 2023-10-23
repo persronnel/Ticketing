@@ -115,46 +115,31 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-
     <script>
-        document.getElementById('sampleForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent the default form submission
-
-            // Collect form data
-            const formData = {
-                'AssignmentGroup': document.getElementById('AssignmentGroup').value,
-                'Description': document.getElementById('Description').value,
-                'Environment': document.getElementById('Environment').value,
-                'Impact': document.getElementById('Impact').value,
-                'Urgency': document.getElementById('Urgency').value,
-                'ITServiceName': document.getElementById('ITServiceName').value,
-                'ShortDescription': document.getElementById('ShortDescription').value,
-                'EndUserFullName': document.getElementById('EndUserFullName').value,
-                'AssignedToFullName': document.getElementById('AssignedToFullName').value
-            };
-
-            // Replace 'your-api-endpoint-here' with your actual API endpoint
-            fetch('your-api-endpoint-here', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Handle successful response (e.g., show a success message)
-                    console.log('Request submitted successfully.');
+        function submitForm() {
+            var formData = new FormData(document.getElementById('sampleForm'));
+            var apiUrl = 'test';
+            var httpMethod = 'POST';
+            var accessToken = 'test';
+            var bearerToken = 'Bearer ' + accessToken;
+            var xhr = new XMLHttpRequest();
+            xhr.open(httpMethod, apiUrl, true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.setRequestHeader('Authorization', bearerToken);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log('Request was successful');
                 } else {
-                    // Handle errors (e.g., show an error message)
-                    console.error('Request submission failed.');
+                    console.error('Request failed');
                 }
-            })
-            .catch(error => {
-                // Handle network or other errors
-                console.error('An error occurred:', error);
+            };
+            var jsonData = {};
+            formData.forEach(function (value, key) {
+                jsonData[key] = value;
             });
-        });
+            var jsonPayload = JSON.stringify(jsonData);
+            xhr.send(jsonPayload);
+        }
     </script>
 </body>
 </html>
