@@ -1,50 +1,58 @@
-Sub SendEmailToTicketingSystem(Item As Outlook.MailItem)
-    Dim http As Object
-    Set http = CreateObject("WinHttp.WinHttpRequest.5.1")
+Sub CreateTicketInTicketingSystem()
+    Dim xml As Object
+    Set xml = CreateObject("MSXML2.ServerXMLHTTP")
+    
+    ' API endpoint URL
+    Dim apiUrl As String
+    apiUrl = "https://your-ticketing-system-api-endpoint.com/create-ticket"
 
-    ' Replace with your API endpoint and authentication details
-    Dim url As String
-    url = "https://api.example.com/tickets"
-    Dim authHeader As String
-    authHeader = "Bearer YourAuthTokenHere"
+    ' Authentication with OAuth token
+    Dim authToken As String
+    authToken = "YOUR_OAUTH_TOKEN_HERE"
+    
+    xml.Open "POST", apiUrl, False
+    xml.setRequestHeader "Authorization", "Bearer " & authToken
+    xml.setRequestHeader "Content-Type", "application/json"
 
-    ' Prompt for AssignmentGroup
+    ' Data to be included in the ticket
+    Dim ticketData As String
+    ticketData = "{
+        ""AssignmentGroup"": ""VALUE"",
+        ""Urgency"": ""VALUE"",
+        ""AssignedToFullName"": ""VALUE"",
+        ""ImpactOnTheService"": ""VALUE"",
+        ""Description"": ""VALUE"",
+        ""Environment"": ""VALUE"",
+        ""ITServiceName"": ""VALUE"",
+        ""ShortDescription"": ""VALUE"",
+        ""IntegrationReference"": ""VALUE"",
+        ""EndUserFullName"": ""VALUE"",
+        ""Purpose"": ""VALUE"",
+        ""PeopleToNotify"": ""VALUE"",
+        ""WishedDueDate"": ""VALUE""
+    }"
+
+    ' Prompt the user to enter values for specific fields
     Dim assignmentGroup As String
-    assignmentGroup = InputBox("Enter Assignment Group:")
+    assignmentGroup = InputBox("Enter AssignmentGroup")
+    Dim urgency As String
+    urgency = InputBox("Enter Urgency")
+    Dim assignedToFullName As String
+    assignedToFullName = InputBox("Enter AssignedToFullName")
+    Dim impactOnTheService As String
+    impactOnTheService = InputBox("Enter ImpactOnTheService")
 
-    ' Extract relevant email data
-    Dim emailSubject As String
-    Dim emailBody As String
-    Dim endUserFullName As String
-
-    emailSubject = Item.Subject
-    emailBody = Item.Body
-    endUserFullName = Item.SenderName
-
-    ' Construct the API request
-    Dim requestData As String
-    requestData = "{""AssignmentGroup"": """ & assignmentGroup & """, " & _
-                   """Description"": """ & emailBody & """, " & _
-                   """Environment"": ""HOMOLOGATION"", " & _
-                   """Impact"": """", " & _
-                   """Urgency"": """", " & _
-                   """ITServiceName"": """", " & _
-                   """ShortDescription"": """ & emailSubject & """, " & _
-                   """EndUserFullName"": """ & endUserFullName & """, " & _
-                   """AssignedToFullName"": ""}"
-
-    ' Set the request headers, including the Authorization header
-    http.Open "POST", url, False
-    http.setRequestHeader "Authorization", authHeader
-    http.setRequestHeader "Content-Type", "application/json"
+    ' Replace "VALUE" with the user-provided values
+    ticketData = Replace(ticketData, "VALUE", assignmentGroup)
+    ticketData = Replace(ticketData, "VALUE", urgency)
+    ticketData = Replace(ticketData, "VALUE", assignedToFullName)
+    ticketData = Replace(ticketData, "VALUE", impactOnTheService)
 
     ' Send the request
-    http.send requestData
+    xml.send ticketData
 
-    ' Handle the response (if needed)
-    Dim responseText As String
-    responseText = http.responseText
-
-    ' Log the response or take further actions
-    Debug.Print responseText
+    ' Handle the response (you can add your own logic here)
+    Dim response As String
+    response = xml.responseText
+    MsgBox "Response: " & response
 End Sub
