@@ -9,6 +9,28 @@ Sub CreateTicketInTicketingSystem()
     ' Authentication with OAuth token
     Dim authToken As String
     authToken = "YOUR_OAUTH_TOKEN_HERE"
+
+Dim authToken As String
+Dim tokenFilePath As String
+tokenFilePath = "C:\myfilepath\myfile.txt" ' Correct path format
+
+' Check if the file exists
+If Dir(tokenFilePath) <> "" Then
+    ' Open the file for reading
+    Open tokenFilePath For Input As #1
+    ' Read the token from the file
+    Line Input #1, authToken
+    ' Close the file
+    Close #1
+Else
+    ' Handle the case where the file doesn't exist
+    MsgBox "OAuth token file not found."
+    ' You might want to exit or handle this error in a different way
+End If
+
+' Now, authToken contains the token read from the file
+Debug.Print "OAuth Token: " & authToken
+
     
     xml.Open "POST", apiUrl, False
     xml.setRequestHeader "Authorization", "Bearer " & authToken
