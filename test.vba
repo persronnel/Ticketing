@@ -1,4 +1,16 @@
 Sub CreateTicketInTicketingSystem()
+Function ParseTicketNumber(response As String) As String
+    Dim jsonObject As Object
+    Set jsonObject = JsonConverter.ParseJson(response) ' You'll need to add a reference to "Microsoft Scripting Runtime" and use a JSON parser like JsonConverter
+    
+    If jsonObject("result")("id") <> "" Then
+        ParseTicketNumber = jsonObject("result")("id")
+    Else
+        ParseTicketNumber = "Not found"
+    End If
+End Function
+
+
 Function SanitizeJSONString(ByVal input As String) As String
     Dim sanitized As String
     Dim char As String
@@ -130,6 +142,9 @@ Dim response As String
 response = xml.responseText
 
 ' Parse the response to extract the ticket number
+Dim response As String
+response = xml.responseText
+
 Dim ticketNumber As String
 ticketNumber = ParseTicketNumber(response) ' You need to implement the ParseTicketNumber function
 
@@ -137,6 +152,11 @@ ticketNumber = ParseTicketNumber(response) ' You need to implement the ParseTick
 If Not olItem Is Nothing Then
     olItem.Subject = "Ticket #" & ticketNumber & " - " & olItem.Subject
     olItem.Save ' Save the email with the updated subject
+End If
+
+' Show the ticket number
+MsgBox "Ticket Number: " & ticketNumber
+
 End If
 
 ' Show the ticket number
