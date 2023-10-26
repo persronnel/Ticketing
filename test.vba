@@ -1,12 +1,20 @@
-Sub CreateTicketInTicketingSystem()
-Function ParseTicketNumber(response As String) As String
-    Dim jsonObject As Object
-    Set jsonObject = JsonConverter.ParseJson(response) ' You'll need to add a reference to "Microsoft Scripting Runtime" and use a JSON parser like JsonConverter
+Function ParseJson(jsonString As String, key As String) As String
+    Dim regex As Object
+    Dim matches As Object
     
-    If jsonObject("result")("id") <> "" Then
-        ParseTicketNumber = jsonObject("result")("id")
+    Set regex = CreateObject("VBScript.RegExp")
+    With regex
+        .Global = True
+        .MultiLine = True
+        .IgnoreCase = False
+        .Pattern = """" & key & """:\s*""([^""]*)"""
+    End With
+    
+    If regex.test(jsonString) Then
+        Set matches = regex.Execute(jsonString)
+        ParseJson = matches(0).SubMatches(0)
     Else
-        ParseTicketNumber = "Not found"
+        ParseJson = "Key not found"
     End If
 End Function
 
@@ -137,16 +145,11 @@ End Function
     ' Send the request
 xml.send ticketData
 
-' Handle the response (you can add your own logic here)
-Dim response As String
-response = xml.responseText
-
-' Parse the response to extract the ticket number
 Dim response As String
 response = xml.responseText
 
 Dim ticketNumber As String
-ticketNumber = ParseTicketNumber(response) ' You need to implement the ParseTicketNumber function
+ticketNumber = ParseJson(response, "id")
 
 ' Update the email subject with the ticket number
 If Not olItem Is Nothing Then
@@ -154,10 +157,6 @@ If Not olItem Is Nothing Then
     olItem.Save ' Save the email with the updated subject
 End If
 
-' Show the ticket number
-MsgBox "Ticket Number: " & ticketNumber
-
-End If
 
 ' Show the ticket number
 MsgBox "Ticket Number: " & ticketNumber
