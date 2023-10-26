@@ -78,3 +78,28 @@ Debug.Print "OAuth Token: " & authToken
     response = xml.responseText
     MsgBox "Response: " & response
 End Sub
+
+
+
+
+Dim olApp As Object
+    Dim olItem As Object
+    Set olApp = GetObject(, "Outlook.Application")
+    
+    If Not olApp Is Nothing Then
+        On Error Resume Next
+        Set olItem = olApp.ActiveInspector.CurrentItem
+        On Error GoTo 0
+    End If
+
+    ' Use the email subject as ShortDescription
+    Dim shortDescription As String
+    If Not olItem Is Nothing Then
+        shortDescription = olItem.Subject
+    End If
+
+    ' Use the email body as Description
+    Dim description As String
+    If Not olItem Is Nothing Then
+        description = olItem.Body
+    End If
