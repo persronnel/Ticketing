@@ -79,20 +79,20 @@ Sub CreateTicketInTicketingSystem()
     End If
 
     ' Use the email subject as ShortDescription
-    Dim shortDescription As String
+    Dim ShortDescription As String
     If Not olItem Is Nothing Then
-        shortDescription = olItem.Subject
+        ShortDescription = olItem.Subject
     End If
 
     ' Use the email body as Description
-    Dim description As String
+    Dim Description As String
     If Not olItem Is Nothing Then
-        description = olItem.Body
+        Description = olItem.Body
     End If
 
     ' Replace "VALUE" with the user-provided values
-    ticketData = Replace(ticketData, "VALUE", shortDescription)
-    ticketData = Replace(ticketData, "VALUE", description)
+    ticketData = Replace(ticketData, "VALUE", ShortDescription)
+    ticketData = Replace(ticketData, "VALUE", Description)
     ticketData = Replace(ticketData, "VALUE", Urgency)
     ticketData = Replace(ticketData, "VALUE", Purpose)
     ticketData = Replace(ticketData, "VALUE", AssignedToFullName)
