@@ -1,4 +1,17 @@
 Sub CreateTicketInTicketingSystem()
+Function SanitizeJSONString(ByVal input As String) As String
+    Dim sanitized As String
+    Dim char As String
+    sanitized = ""
+    For i = 1 To Len(input)
+        char = Mid(input, i, 1)
+        If (AscW(char) >= 32 And AscW(char) <= 126) Or char = vbCr Or char = vbLf Or char = vbTab Then
+            sanitized = sanitized & char
+        End If
+    Next i
+    SanitizeJSONString = sanitized
+End Function
+
     Dim xml As Object
     Set xml = CreateObject("MSXML2.ServerXMLHTTP")
     
@@ -36,19 +49,19 @@ Sub CreateTicketInTicketingSystem()
     Dim ticketData As String
     ticketData = "{
         ""AssignmentGroup"": ""WW_Team"",
-        ""Urgency"": ""VALUE"",
+        ""Urgency"": ""UrgencyVal"",
         ""AssignedToFullName"": ""VALUE"",
         ""ImpactOnTheService"": ""No Impact"",
-        ""Impact"": ""VALUE"",
-        ""Description"": ""VALUE"",
-        ""Environment"": ""VALUE"",
+        ""Impact"": ""ImpactVal"",
+        ""Description"": ""DescriptionVal"",
+        ""Environment"": ""EnvironmentVal"",
         ""ITServiceName"": ""TheservicenName"",
-        ""ShortDescription"": ""VALUE"",
+        ""ShortDescription"": ""ShortDescriptionVal"",
         ""IntegrationReference"": ""FFF"",
-        ""EndUserFullName"": ""VALUE"",
-        ""Purpose"": ""VALUE"",
+        ""EndUserFullName"": ""EndUserFullNameVal"",
+        ""Purpose"": ""PurposeVal"",
         ""PeopleToNotify"": ""ronnel.me@gmail.com"",
-        ""WishedDueDate"": ""VALUE""
+        ""WishedDueDate"": ""WishedDueDateVal""
     }"
 
     ' Prompt the user to enter values for specific fields
@@ -91,15 +104,15 @@ Sub CreateTicketInTicketingSystem()
     End If
 
     ' Replace "VALUE" with the user-provided values
-    ticketData = Replace(ticketData, "VALUE", ShortDescription)
-    ticketData = Replace(ticketData, "VALUE", Description)
-    ticketData = Replace(ticketData, "VALUE", Urgency)
-    ticketData = Replace(ticketData, "VALUE", Purpose)
-    ticketData = Replace(ticketData, "VALUE", AssignedToFullName)
-    ticketData = Replace(ticketData, "VALUE", Environment)
-    ticketData = Replace(ticketData, "VALUE", Impact)
-    ticketData = Replace(ticketData, "VALUE", WishedDueDate)
-    ticketData = Replace(ticketData, "VALUE", EndUserFullName)
+    ticketData = Replace(ticketData, "ShortDescriptionVal", ShortDescription)
+    ticketData = Replace(ticketData, "DescriptionVal", Description)
+    ticketData = Replace(ticketData, "UrgencyVal", Urgency)
+    ticketData = Replace(ticketData, "PurposeVal", Purpose)
+    ticketData = Replace(ticketData, "AssignedToFullNameVal", AssignedToFullName)
+    ticketData = Replace(ticketData, "EnvironmentVal", Environment)
+    ticketData = Replace(ticketData, "ImpactVal", Impact)
+    ticketData = Replace(ticketData, "WishedDueDateVal", WishedDueDate)
+    ticketData = Replace(ticketData, "EndUserFullNameVal", EndUserFullName)
 
     ' Send the request
     xml.send ticketData
