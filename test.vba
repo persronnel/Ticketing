@@ -121,4 +121,25 @@ End Function
     Dim response As String
     response = xml.responseText
     MsgBox "Response: " & response
+
+    ' Send the request
+xml.send ticketData
+
+' Handle the response (you can add your own logic here)
+Dim response As String
+response = xml.responseText
+
+' Parse the response to extract the ticket number
+Dim ticketNumber As String
+ticketNumber = ParseTicketNumber(response) ' You need to implement the ParseTicketNumber function
+
+' Update the email subject with the ticket number
+If Not olItem Is Nothing Then
+    olItem.Subject = "Ticket #" & ticketNumber & " - " & olItem.Subject
+    olItem.Save ' Save the email with the updated subject
+End If
+
+' Show the ticket number
+MsgBox "Ticket Number: " & ticketNumber
+
 End Sub
