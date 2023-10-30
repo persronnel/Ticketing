@@ -177,37 +177,17 @@ Private Sub SubmitButton_Click()
 End Sub
 
 // new
-Private Sub UserForm_Initialize()
-    Dim olApp As Object ' Outlook.Application
-    Dim olNamespace As Object ' Outlook.NameSpace
-    Dim olItem As Object ' Outlook.MailItem
+    Dim olName As String
 
-    ' Initialize Outlook
+    ' Create an Outlook Application object
     Set olApp = CreateObject("Outlook.Application")
-    Set olNamespace = olApp.GetNamespace("MAPI")
 
-    ' Assuming you want to work with the currently selected email
-    On Error Resume Next
-    Set olItem = olApp.ActiveInspector.CurrentItem
-    On Error GoTo 0
-
-    If olItem Is Nothing Then
-        SenderInfoTextBox.Value = "No email item is selected or open."
-        Exit Sub
+    ' Check if there is an active email item open
+    If olApp.ActiveInspector.CurrentItem.Class = olMail Then
+        Set olItem = olApp.ActiveInspector.CurrentItem
+        olName = olItem.SenderName
+    Else
+        olName = "No Active Email"
     End If
-
-    ' Access sender information
-    Dim senderName As String
-    Dim senderEmailAddress As String
-
-    senderName = olItem.SenderName ' Sender's display name
-    senderEmailAddress = olItem.SenderEmailAddress ' Sender's email address
-
-    ' Display sender information in the TextBox
-    SenderInfoTextBox.Value = "Sender Name: " & senderName & vbCrLf & "Sender Email Address: " & senderEmailAddress
-
-    ' Release Outlook objects
-    Set olApp = Nothing
-    Set olNamespace = Nothing
     Set olItem = Nothing
 End Sub
