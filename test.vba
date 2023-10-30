@@ -176,24 +176,38 @@ Private Sub SubmitButton_Click()
     Unload Me
 End Sub
 
+// new
+Private Sub UserForm_Initialize()
+    Dim olApp As Object ' Outlook.Application
+    Dim olNamespace As Object ' Outlook.NameSpace
+    Dim olItem As Object ' Outlook.MailItem
 
-// mmodule
-Sub SendToAPI(Urgency As String, AssignedToFullName As String, Impact As String, Environment As String, EndUserFullName As String, Purpose As String, WishedDueDate As String)
+    ' Initialize Outlook
+    Set olApp = CreateObject("Outlook.Application")
+    Set olNamespace = olApp.GetNamespace("MAPI")
 
+    ' Assuming you want to work with the currently selected email
+    On Error Resume Next
+    Set olItem = olApp.ActiveInspector.CurrentItem
+    On Error GoTo 0
 
-ticketData = "{
-    ""AssignmentGroup"": ""WW_Team"",
-    ""Urgency"": """ & Urgency & """",
-    ""AssignedToFullName"": """ & AssignedToFullName & """",
-    ""ImpactOnTheService"": ""No Impact"",
-    ""Impact"": ""ImpactVal"",
-    ""Description"": ""DescriptionVal"",
-    ""Environment"": """ & Environment & """",
-    ""ITServiceName"": ""TheservicenName"",
-    ""ShortDescription"": """ & SDesc & """",
-    ""IntegrationReference"": ""FFF"",
-    ""EndUserFullName"": """ & EndUserFullName & """",
-    ""Purpose"": """ & Purpose & """",
-    ""PeopleToNotify"": ""ronnel.me@gmail.com"",
-    ""WishedDueDate"": """ & WishedDueDate & """
-}"
+    If olItem Is Nothing Then
+        SenderInfoTextBox.Value = "No email item is selected or open."
+        Exit Sub
+    End If
+
+    ' Access sender information
+    Dim senderName As String
+    Dim senderEmailAddress As String
+
+    senderName = olItem.SenderName ' Sender's display name
+    senderEmailAddress = olItem.SenderEmailAddress ' Sender's email address
+
+    ' Display sender information in the TextBox
+    SenderInfoTextBox.Value = "Sender Name: " & senderName & vbCrLf & "Sender Email Address: " & senderEmailAddress
+
+    ' Release Outlook objects
+    Set olApp = Nothing
+    Set olNamespace = Nothing
+    Set olItem = Nothing
+End Sub
