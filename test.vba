@@ -199,3 +199,37 @@ End Sub
     Set olItem = Nothing
     Set olApp = Nothing
 End Sub
+
+
+Function TrimAfterSecondSpace(inputString As String) As String
+    Dim spaceCount As Integer
+    Dim i As Integer
+    Dim resultString As String
+
+    spaceCount = 0
+    resultString = ""
+
+    For i = 1 To Len(inputString)
+        If Mid(inputString, i, 1) = " " Then
+            spaceCount = spaceCount + 1
+            If spaceCount = 2 Then
+                ' Found the second space, so get the portion of the string after it
+                resultString = Mid(inputString, i + 1)
+                Exit For
+            End If
+        End If
+    Next i
+
+    TrimAfterSecondSpace = resultString
+End Function
+
+
+Sub TestTrimAfterSecondSpace()
+    Dim inputString As String
+    Dim trimmedString As String
+
+    inputString = "This is an example string with more than two spaces"
+    trimmedString = TrimAfterSecondSpace(inputString)
+
+    Debug.Print trimmedString ' This prints "an example string with more than two spaces"
+End Sub
