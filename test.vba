@@ -177,6 +177,8 @@ Private Sub SubmitButton_Click()
 End Sub
 
 // new
+    Dim olApp As Object
+    Dim olItem As Object
     Dim olName As String
 
     ' Create an Outlook Application object
@@ -189,5 +191,11 @@ End Sub
     Else
         olName = "No Active Email"
     End If
+
+    ' Set the TextBox value to the sender's name
+    TextBox1.Value = olName
+
+    ' Release the Outlook objects
     Set olItem = Nothing
+    Set olApp = Nothing
 End Sub
