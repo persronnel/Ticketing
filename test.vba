@@ -177,59 +177,25 @@ Private Sub SubmitButton_Click()
 End Sub
 
 // new
+Private Sub UserForm_Initialize()
     Dim olApp As Object
-    Dim olItem As Object
-    Dim olName As String
+    Dim olNamespace As Object
+    Dim currentUser As Object
+    Dim userName As String
 
     ' Create an Outlook Application object
     Set olApp = CreateObject("Outlook.Application")
+    Set olNamespace = olApp.GetNamespace("MAPI")
+    Set currentUser = olNamespace.CurrentUser
 
-    ' Check if there is an active email item open
-    If olApp.ActiveInspector.CurrentItem.Class = olMail Then
-        Set olItem = olApp.ActiveInspector.CurrentItem
-        olName = olItem.SenderName
-    Else
-        olName = "No Active Email"
-    End If
+    ' Get the name of the current user
+    userName = currentUser.Name
 
-    ' Set the TextBox value to the sender's name
-    TextBox1.Value = olName
+    ' Set the TextBox value to the user's name
+    TextBox1.Value = userName
 
     ' Release the Outlook objects
-    Set olItem = Nothing
+    Set currentUser = Nothing
+    Set olNamespace = Nothing
     Set olApp = Nothing
-End Sub
-
-
-Function TrimAfterSecondSpace(inputString As String) As String
-    Dim spaceCount As Integer
-    Dim i As Integer
-    Dim resultString As String
-
-    spaceCount = 0
-    resultString = ""
-
-    For i = 1 To Len(inputString)
-        If Mid(inputString, i, 1) = " " Then
-            spaceCount = spaceCount + 1
-            If spaceCount = 2 Then
-                ' Found the second space, so get the portion of the string after it
-                resultString = Mid(inputString, i + 1)
-                Exit For
-            End If
-        End If
-    Next i
-
-    TrimAfterSecondSpace = resultString
-End Function
-
-
-Sub TestTrimAfterSecondSpace()
-    Dim inputString As String
-    Dim trimmedString As String
-
-    inputString = "This is an example string with more than two spaces"
-    trimmedString = TrimAfterSecondSpace(inputString)
-
-    Debug.Print trimmedString ' This prints "an example string with more than two spaces"
 End Sub
