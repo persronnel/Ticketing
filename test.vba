@@ -23,8 +23,8 @@ Sub UpdateSubjectInConversation()
             
             If Not Conversation Is Nothing Then
                 ' Update subject for all items in the conversation
-                For Each Item In Conversation.GetTable.Items
-                    Item.Subject = "id number 12" & Item.Subject
+                For Each Item In Conversation.GetTable.OutlookTable.Rows
+                    Item("Subject") = "id number 12" & Item("Subject")
                     Item.Save ' Save changes to each item
                 Next Item
             End If
