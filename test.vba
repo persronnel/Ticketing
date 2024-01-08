@@ -1,33 +1,21 @@
-Sub UpdateSubjectInConversation()
-    Dim ActWind As Object
-    Dim MyItem As Object
-    Dim Conversation As Object
-    Dim Item As Object
+Sub ChangeSubjectsInInbox()
+    Dim inbox As Outlook.MAPIFolder
+    Dim item As Object
+    Dim conversation As Outlook.Conversation
     
-    ' Get the currently active window
-    Set ActWind = Application.ActiveWindow
+    ' Get the Inbox folder
+    Set inbox = Application.GetNamespace("MAPI").GetDefaultFolder(olFolderInbox)
     
-    ' Check if the active window is an Inspector or if there is a selection
-    If ActWind.Class = olInspector Then
-        Set MyItem = ActWind.CurrentItem
-    ElseIf ActWind.Selection.Count > 0 Then
-        Set MyItem = ActWind.Selection(1)
-    End If
-    
-    ' Check if the item is part of a conversation
-    If Not MyItem Is Nothing Then
-        If MyItem.Class = olMail Then ' Check if it's a mail item (you might need to adjust this based on your specific item type)
-            On Error Resume Next
-            Set Conversation = MyItem.GetConversation
-            On Error GoTo 0
-            
-            If Not Conversation Is Nothing Then
-                ' Update subject for all items in the conversation
-                For Each Item In Conversation.GetTable.OutlookTable.Rows
-                    Item("Subject") = "id number 12" & Item("Subject")
-                    Item.Save ' Save changes to each item
-                Next Item
+    ' Loop through all items in the Inbox
+    For Each item In inbox.Items
+        ' Check if the item is a mail item
+        If TypeOf item Is Outlook.MailItem Then
+            ' Check if the mail item is part of a conversation
+            If Not item.Conversation Is Nothing Then
+                ' Change the subject of the first email in the conversation
+                item.Conversation.GetTable.GetNextRow.FieldAccessor.SetProperty "Subject", "New Subject"
+                item.Save
             End If
         End If
-    End If
+    Next item
 End Sub
