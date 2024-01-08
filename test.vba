@@ -11,9 +11,9 @@ Sub ChangeSubjectsInInbox()
         ' Check if the item is a mail item
         If TypeOf item Is Outlook.MailItem Then
             ' Check if the mail item is part of a conversation
-            If Not item.Conversation Is Nothing Then
+            If Not item.GetConversation Is Nothing Then
                 ' Change the subject of the first email in the conversation
-                item.Conversation.GetTable.GetNextRow.FieldAccessor.SetProperty "Subject", "New Subject"
+                item.GetConversation.GetTable.GetNextRow.FieldAccessor.SetProperty "Subject", "New Subject"
                 item.Save
             End If
         End If
