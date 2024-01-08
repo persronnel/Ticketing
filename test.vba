@@ -18,17 +18,15 @@ Sub UpdateSubjectInConversation()
     If Not MyItem Is Nothing Then
         If MyItem.Class = olMail Then ' Check if it's a mail item (you might need to adjust this based on your specific item type)
             On Error Resume Next
-            Set Conversation = Application.GetNamespace("MAPI").GetConversation(MyItem.ConversationIndex)
+            Set Conversation = MyItem.GetConversation
             On Error GoTo 0
             
             If Not Conversation Is Nothing Then
                 ' Update subject for all items in the conversation
                 For Each Item In Conversation.GetTable.Items
                     Item.Subject = "id number 12" & Item.Subject
+                    Item.Save ' Save changes to each item
                 Next Item
-            Else
-                ' If the item is not part of a conversation, update only the current item
-                MyItem.Subject = "id number 12" & MyItem.Subject
             End If
         End If
     End If
