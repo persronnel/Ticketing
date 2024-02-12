@@ -3,44 +3,28 @@ Sub ReformatData()
     Dim lastRow As Long
     Dim i As Long
     
-    ' Set the worksheet where your data is located
-    Set ws = ThisWorkbook.Sheets("Sheet1") ' Change "Sheet1" to your sheet name
+    ' Set the worksheet (change "Sheet1" to your actual sheet name)
+    Set ws = ThisWorkbook.Sheets("Sheet1")
     
-    ' Find the last row with data
+    ' Find the last row with data in column A
     lastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
     
-    ' Loop through each row starting from the second row (assuming headers are in the first row)
+    ' Loop through each row from 2 to the last row
     For i = 2 To lastRow
-        ' Extract data from the existing columns
-        Dim priority As String
-        Dim number As Long
-        Dim endUser As String
-        Dim state As String
-        Dim summary As String
-        Dim opened As Date
-        Dim resolved As Date
-        Dim comments As String
+        ' Format the data in the desired way
+        ws.Cells(i, 1).Value = Left(ws.Cells(i, 1).Value, 2) ' Extract first two characters for Priority
+        ws.Cells(i, 6).Value = Format(ws.Cells(i, 6).Value, "dd-mmm-yyyy") ' Format Opened date
+        ws.Cells(i, 7).Value = Format(ws.Cells(i, 8).Value, "dd-mmm-yyyy") ' Format Resolved date
+        ws.Cells(i, 8).Value = "[" & Mid(ws.Cells(i, 7).Value, 14, 20) & "]" & Mid(ws.Cells(i, 9).Value, 12) ' Format Comments
         
-        priority = Left(ws.Cells(i, 1).Value, 2) ' Extract the first two characters
-        number = ws.Cells(i, 2).Value
-        endUser = ws.Cells(i, 3).Value
-        state = ws.Cells(i, 4).Value
-        summary = Mid(ws.Cells(i, 6).Value, InStr(ws.Cells(i, 6).Value, "(") + 1, InStr(ws.Cells(i, 6).Value, ")") - InStr(ws.Cells(i, 6).Value, "(") - 1)
-        opened = DateValue(ws.Cells(i, 7).Value)
-        resolved = DateValue(ws.Cells(i, 8).Value)
-        comments = Replace(Replace(Mid(ws.Cells(i, 9).Value, InStr(ws.Cells(i, 9).Value, "(") + 1), ")", ""), "=>", "=>")
-        
-        ' Output the reformatted data to new columns
-        ws.Cells(i, 1).Value = priority
-        ws.Cells(i, 2).Value = number
-        ws.Cells(i, 3).Value = endUser
-        ws.Cells(i, 4).Value = state
-        ws.Cells(i, 5).Value = summary
-        ws.Cells(i, 6).Value = Format(opened, "d-mmm-yyyy")
-        ws.Cells(i, 7).Value = comments
-        ws.Cells(i, 8).ClearContents ' Clear unnecessary columns (e.g., old "Requested for Name" column)
-        ws.Cells(i, 9).ClearContents
-        ws.Cells(i, 10).ClearContents
-        ws.Cells(i, 11).ClearContents
+        ' Rearrange columns and delete unnecessary columns
+        ws.Rows(i).Columns("B:D").Cut
+        ws.Rows(i).Columns("A").Insert Shift:=xlToRight
+        ws.Rows(i).Columns("H:I").Cut
+        ws.Rows(i).Columns("F").Insert Shift:=xlToRight
+        ws.Rows(i).Columns("C:D").Delete Shift:=xlToLeft
     Next i
+    
+    ' Autofit columns for better visibility
+    ws.Rows(1).EntireColumn.AutoFit
 End Sub
